@@ -6,11 +6,11 @@ async function scrapeParkingData() {
     const url = 'https://www.lsu.edu/parking/availability.php'; 
 }
 
-try{
+ try {
     const {data: html} = await axios.get(url); 
     const $ = cheerio.load(html); 
     const parkingData []; 
-}
+ }
 
   $('table tbody tr').each((index, element) => {
     const lotName = $(element).find('td.nth-child(1)').text().trim(); 
@@ -20,3 +20,8 @@ try{
     parkingData.push({ lotName, availability, day});
 
 }); 
+  return parkingData;
+ catch(error) {
+    console.error('Error fetching or parsing data:', error);
+}
+module.exports = scrapeParkingData; 
