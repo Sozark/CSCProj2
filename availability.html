@@ -42,6 +42,51 @@
             </tbody>
         </table>
     </div>
+
+    <!-- JavaScript for fetching and populating the table -->
+    <script>
+      async function loadAvailability() {
+        try {
+          // Fetch data from the REST API
+          const response = await fetch('/api/availability');
+          if (!response.ok) {
+            throw new Error('Failed to fetch availability data');
+          }
+          
+          const data = await response.json();
+
+          // Populate the table dynamically
+          const tableBody = document.getElementById('availability-table');
+          tableBody.innerHTML = ''; // Clear existing rows
+
+          data.forEach((entry) => {
+            const row = document.createElement('tr');
+
+            const lotNameCell = document.createElement('td');
+            lotNameCell.textContent = entry.lotName;
+
+            const availabilityCell = document.createElement('td');
+            availabilityCell.textContent = entry.availability;
+
+            const dayCell = document.createElement('td');
+            dayCell.textContent = entry.day;
+
+            row.appendChild(lotNameCell);
+            row.appendChild(availabilityCell);
+            row.appendChild(dayCell);
+
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading availability data:', error);
+          alert('Unable to load availability data.');
+        }
+      }
+
+      // Load availability data when the page loads
+      document.addEventListener('DOMContentLoaded', loadAvailability);
+    </script>
 </body>
 </html>
+
 
